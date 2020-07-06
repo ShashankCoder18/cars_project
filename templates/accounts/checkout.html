@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title%} | {{ listing.name }}{% endblock %}
+
+{% load humanize %}
+
+{% block content %}
+
+{% if user.is_authenticated %}
+    
+<section>
+    <div class="row">
+        <div class="col-2"></div>
+        <div class="col-6">
+            </br>
+            <div style="text-align: center;"><h1> CHECKOUT HERE!</h1></div>
+            </br>
+            <form action="{% url 'dashboard' %}" method="POST">
+            {% csrf_token %}
+            
+            <!-- Hidden Inputs --> 
+
+            <input type="hidden" name="listing"    value=" {{listing.name}} ">
+            <input type="hidden" name="listing_id" value=" {{listing.id}} ">
+            <input type="hidden" name="office"     value=" {{listing.office}} ">
+            <input type="hidden" name="company"    value=" {{listing.company}} ">
+             
+            <!-- Normal Inputs -->
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input type="text" name="username" value="{{ user.username }}" class="form-control" >
+                    </div>
+                </div>
+                <div class="col-6">
+                    <div class="form-group">
+                        
+                        <label for="email">Email</label>
+                        
+                        <input type="email" name="email" value="{{ user.email }}" class="form-control">
+                        
+                    </div>
+                </div> 
+            </div>
+
+            <div class="form-group">
+                <label for="address">Address ( Please Provide Complete Address )</label>
+                <textarea name="address" class="form-control"></textarea>
+            </div>
+
+            <div class="form-group">
+                <label for="phone">Phone Number</label>
+                <input type="number" name="phone" class="form-control" >
+            </div> 
+
+            <div class="form-group">
+                <label for="City"> Pincode </label>
+                <input type="number" name="pincode" class="form-control" required>
+            </div>
+
+            </br>
+
+            <div class="form-group">
+                <label for="Payment"><h5> Mode Of Payment {{ listing.price | intcomma }}</h5> </label>
+                </br>
+                <input type="radio" name="payment" id="online" value="online"required>
+                <label for="online">Online Payment</label>
+                </br>
+                <input type="radio" name="payment" id="cod" value="COD"required>
+                <label for="cod">Cash On Delivery</label>
+            </div>
+
+            <div class="row">                                                         <!-- Seperate row inside a col -->  
+                <div class="col-4" ></div>
+                    <div class="col-4" > 
+                    <input type="submit" value="BUY" class="btn btn-secondary btn-block">
+                    </div>
+                <div class="col-4" ></div>
+            </div>
+
+            </br> 
+            </br> 
+            </div>  
+        
+            </form>
+            <div class="col-md-3 p-2">
+            </br>
+                <div class="card mb-3">
+                    <img src="{{listing.photo_main.url }}" alt="" class="img-main img-fluid p-4">
+                  <div class="card-body">
+                    <h5 class="card-title">{{ listing.name }}</h5>
+                    <h6 class="text-secondary">{{ listing.company }}</h6>
+                    <h4 class="text" style="color: darkgreen;">{{ listing.price | intcomma }}</h4>  
+                    
+                  </div>
+                </div>
+            </div>    
+        
+    </div>
+    </div>
+</section>
+    
+{% else %}
+<div>
+  <section style="text-align: center; min-height: 80vh; ">  
+  </br>
+  </br>
+  </br>  
+</br>
+  <h1> You Need To Register/Login To Purchase ! </h1>
+</section>
+</div>  
+{% endif %}
+
+{% endblock %}

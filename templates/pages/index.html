@@ -1,0 +1,158 @@
+{% extends 'base.html' %} 
+
+{% block title%} | Custom Search{% endblock %}
+
+{% block content %}
+<!-- Showcase -->
+<section id="showcase">
+    <div class="container text-center">
+      <!-- Alerts ! or error messages-->
+      {% include 'partials/_alerts.html' %}
+      <div class="home-search p-5">
+        <div class="overlay p-5">
+          <h1 class="display-4 mb-4">
+           Searching Cars Just Got So Easy
+          </h1>
+        </br>
+          <p class="lead"></p>
+          <div class="search">
+            <form action="{% url 'search' %}">
+              <!-- Form Row 1 -->
+              <div class="form-row">
+                <div class="col-md-4 mb-3">
+                  <label class="sr-only">Keywords</label>
+                  <input type="text" name="keywords" class="form-control" placeholder="Keyword (Suv, Sports, etc)">
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="sr-only">Company</label>
+                  <select name="company" class="form-control">
+                    <option selected="true" disabled="disabled">company</option>
+                    {% for key,value in companyc.items %}
+                     <option value="{{key}}" >{{value}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                  <label class="sr-only">Showroom</label>
+                  <select name="showroom" class="form-control">
+                    <option selected="true" disabled="disabled">showroom</option>
+                    {% for key,value in showroomc.items %}
+                     <option value="{{key}}" >{{value}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <!-- Form Row 2 -->
+              <div class="form-row">
+                <div class="col-md-6 mb-3">
+                  <label class="sr-only">Seats</label>
+                  <select name="seats" class="form-control">
+                    <option selected="true" disabled="disabled">Seats</option>
+                    {% for key,value in seatsc.items %}
+                     <option value="{{key}}" >{{value}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+                <div class="col-md-6 mb-3">
+                  <select name="price" class="form-control" id="type">
+                    <option selected="true" disabled="disabled">Max Price (Any)</option>
+                    {% for key,value in pricec.items %}
+                     <option value="{{key}}" >{{value}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <button class="btn btn-secondary btn-block mt-4" type="submit">Submit form</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Listings -->
+  <section id="listings" class="py-5">
+    <div class="container">
+      <h1 class="text-center mb-3">TOP RATED CARS</h1>
+    </br>
+      <div class="row">
+
+        {% if listings %}
+           {% for listing in listings %}
+              <div class="col-md-6 col-lg-4 mb-4">
+                <div class="card listing-preview">
+                  <img class="card-img-top" src="{{listing.photo_main.url}}" alt="">
+                  <div class="card-body">
+                    <div class="listing-heading text-center">
+                      <h4 class="text-primary">{{listing.name}}</h4>
+                      <p>
+                        {{listing.rating}}
+                        <i class="fas fa-star text-secondary"></i></p>
+                    </div>
+                    <div class="row py-2 text-secondary">
+                      <div class="col-6">
+                        <i class="fas fa-car"></i> {{ listing.category }}</div>
+                      <div class="col-6">
+                        <i class="fas fa-male"></i> {{ listing.seats }} </div>
+                    </div>
+                    <div class="row py-2 text-secondary">
+                      <div class="col-6">
+                        <i class="fas fa-palette"></i> 3 colours</div>
+                      <div class="col-6">
+                        <i class="fas fa-money"></i></div>
+                    </div>
+                    <hr>
+                    <div class="row py-2 text-secondary">
+                      <div class="col-12">
+                        <i class="fas fa-building"></i> {{ listing.company }}</div>
+                    </div>
+                    <div class="row py-2 text-secondary">
+                      <div class="col-12">
+                        <i class="fas fa-user"></i> {{ listing.office }}</div>
+                    </div>
+                    <div class="row text-secondary py-2">
+                      <div class="col-6">
+                        <i class="fas fa-clock"></i> {{ listing.list_date | timesince }}</div>
+                    </div>
+                    <hr>
+                    <a href="{% url 'listing' listing.id %}" class="btn btn-primary btn-block">View Car</a>
+                  </div>
+                </div>
+              </div>    
+           {% endfor %}
+        {% else %} 
+          <div class="col-md-12">
+            <p> No CARS are available </p>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </section>
+
+  <section id="services" class="py-5 bg-secondary text-white">
+    <div class="container">
+      <div class="row text-center">
+        <div class="col-md-4">
+          <i class="fas fa-comment fa-4x mr-4"></i>
+          <hr>
+          <h3>Consulting Services</h3>
+          <p>Feel free to contact us anytime , We will help you to make the right decisions.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="fas fa-car fa-4x mr-4"></i>
+          <hr>
+          <h3>Cars</h3>
+          <p>We have wide variety of cars to choose from , We also import cars from other countries.</p>
+        </div>
+        <div class="col-md-4">
+          <i class="fas fa-suitcase fa-4x mr-4"></i>
+          <hr>
+          <h3>Renting & Selling</h3>
+          <p>We provide the best quality cars and nothing less.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+{% endblock %}
